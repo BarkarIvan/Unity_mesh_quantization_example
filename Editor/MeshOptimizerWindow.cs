@@ -118,9 +118,12 @@ public class MeshOptimizerWindow : EditorWindow
             Vector3 pos = positions[i];
             float magnitude = pos.magnitude;
 
-            float smallestDivision = Mathf.Max(Mathf.Floor(magnitude / multiplier) * multiplier, multiplier);
-            float highestDivision = Mathf.Max(Mathf.Ceil(magnitude / multiplier) * multiplier, multiplier);
+            float smallestDivision = Mathf.Floor(magnitude / multiplier) * multiplier;
+            float highestDivision = Mathf.Ceil(magnitude / multiplier) * multiplier;
 
+            if (smallestDivision == 0) smallestDivision = multiplier;
+            if (highestDivision == 0) highestDivision = multiplier;
+        
             Vector3 pos1 = pos / smallestDivision;
             Vector3 pos2 = pos / highestDivision;
 
