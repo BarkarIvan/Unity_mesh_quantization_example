@@ -127,15 +127,16 @@ public class MeshOptimizerWindow : EditorWindow
             Vector3 pos1 = pos / smallestDivision;
             Vector3 pos2 = pos / highestDivision;
 
-            bool usePos1 = (pos2 - pos).sqrMagnitude > (pos1 - pos).sqrMagnitude;
-            Vector3 newPos = usePos1 ? pos1 : pos2;
-            short bestDivider = VertexCompressionUtils.FloatToSnorm16((usePos1 ? smallestDivision : highestDivision) / multiplier);
+            bool bestFit = (pos2 - pos).sqrMagnitude > (pos1 - pos).sqrMagnitude;
+            Vector3 newPos = bestFit ? pos1 : pos2;
+            float bestDivider = (bestFit ? smallestDivision : highestDivision) / multiplier;
+            short packedDivider = VertexCompressionUtils.FloatToSnorm16(bestDivider);
 
             packedPositions[i] = new SNorm16Vector(
                 VertexCompressionUtils.FloatToSnorm16(newPos.x),
                 VertexCompressionUtils.FloatToSnorm16(newPos.y),
                 VertexCompressionUtils.FloatToSnorm16(newPos.z),
-                bestDivider
+                packedDivider
             );
         }
 
